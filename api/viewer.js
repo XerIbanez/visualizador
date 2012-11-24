@@ -514,6 +514,38 @@ function createMap(conf) {
   }
 }
 
+
+/*************************************************************************************/
+/*
+ * An event occurred so now drill down the layers to get the info
+ */
+function findLayerClick(event) {
+
+    layerlist = "here,there,everywhere";
+
+    mouseLoc = map.getLonLatFromPixel(event.xy);
+
+    var url = prox.getFullRequestString({
+                REQUEST: "GetFeatureInfo",
+                EXCEPTIONS: "application/vnd.ogc.se_xml",
+                BBOX: map.getExtent().toBBOX(),
+                X: event.xy.x,
+                Y: event.xy.y,
+                INFO_FORMAT: 'text/plain',
+                QUERY_LAYERS: layerlist,
+                FEATURE_COUNT: 1,
+                WIDTH: map.size.w,
+                HEIGHT: map.size.h},
+                "http://server.org/cgi-bin/wmsmap?");
+
+    OpenLayers.loadURL(url, '', this, setHTML);
+
+    Event.stop(event);
+}
+
+/*************************************************************************************************/
+
+
 /**
  * Principal function launched on "onLoad" event
  */
