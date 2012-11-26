@@ -599,7 +599,7 @@ depto + "</h2><hr/>" +
             		popup.destroy();
             		popup = null;
 		        }
-        		popup = new OpenLayers.Popup.AnchoredBubble("Informion de DEpartamento",
+        		popup = new OpenLayers.Popup.AnchoredBubble("Informacion de Departamento",
                                         mouseLoc,
                                         new OpenLayers.Size(250,120),
                                         popup_info,
