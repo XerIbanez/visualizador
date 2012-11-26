@@ -624,6 +624,7 @@ init = function () {
   conf.getUrlParameters();
   createLayout(conf);
   createMap(conf);
+  enableGetFeature();
 };
 
 window.onload = init;
