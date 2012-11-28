@@ -514,10 +514,7 @@ function createMap(conf) {
   }
 }
 
-
-/*************************************************************************************/
-/*Funcion getFeature  */
-/**Genera la Informacion en el evento Click
+/**Generaates a GetFreature information onclick event
 */
 function enableGetFeature()
 {
@@ -561,8 +558,7 @@ function enableGetFeature()
                     if(map.layers[0].params.FEATUREID) {
                         params.featureid = map.layers[0].params.FEATUREID;
                     }
-                    OpenLayers.loadURL("http://mapas.vicepresidencia.gob.bo/geoserver/AtlasElectoral/wms", params, this, setHTML, 
-setHTML);
+                    OpenLayers.loadURL("http://mapas.vicepresidencia.gob.bo/geoserver/AtlasElectoral/wms", params, this, setHTML, setHTML);
                     OpenLayers.Event.stop(e);
                 });
             
@@ -576,7 +572,7 @@ var mouseLoc;
 // parse the response provided into the popup
             function setHTML(response){
  			var lines = response.responseText.split('\n');
-			var depto,km2;
+			var depto,km2,codigo;
 			for (var lcv = 0; lcv < (lines.length); lcv++) {
 		            var vals = lines[lcv].replace(/^\s*/,'').replace(/\s*$/,'').replace(/ = /,"=").replace(/'/g,'').split('=');
             		if (vals[1] == "") {
@@ -588,31 +584,40 @@ var mouseLoc;
             		} else if (vals[0].indexOf('area_km2') != -1 ) {
                 		km2 = vals[1];
 					}
+					//Codigo Insertado
+					if (vals[1] == "") {
+                        vals[1] = "Desconocido";
+                    }
+
+                    if (vals[0].indexOf('codigo') != -1 ) {
+                        codigo = vals[1];
+                    } 
+// fin codigo insertado
+
             }
         
 
-				var popup_info = "<img alt=\"Logotipo de GeoBolivia\" src=\"img/geologo_16x16.png\"><h2>" + 
-depto + "</h2><hr/>" +
-                        "<b>&aacute;rea:</b> " + parseFloat(km2).toFixed(3) +
+				var popup_info = "<img alt=\"Logotipo de GeoBolivia\" src=\"img/geologo_16x16.png\"><h2> Departamento de " + 
+depto + "</h2><hr/>" +"<b> Codigo de departamento: </b>" + codigo +
+                        "<br><b>&aacute;rea del Departamento:</b> " + parseFloat(km2).toFixed(2) +
                         " km2 <hr/>";
   				if (popup != null) {
             		popup.destroy();
             		popup = null;
 		        }
-        		popup = new OpenLayers.Popup.AnchoredBubble("Informacion de Departamento",
+        		popup = new OpenLayers.Popup.AnchoredBubble("Informacion del Departamento",
                                         mouseLoc,
-                                        new OpenLayers.Size(250,120),
+                                        new OpenLayers.Size(250,200),
                                         popup_info,
                                         null,
                                         true);
-        popup.setBackgroundColor("#bcd2ee");
+        popup.setBackgroundColor("#d8d8d8");
+		popup.setOpacity(60.5);
         map.addPopup(popup);
                 document.getElementById('responseData').innerHTML = popup_info;   
 
             };
             
-/*************************************************************************************************/
-
 
 /**
  * Principal function launched on "onLoad" event
